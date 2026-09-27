@@ -5,13 +5,18 @@ import jakarta.transaction.Transactional;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
+import se331.lab.entity.AuctionItem;
+import se331.lab.entity.Bid;
 import se331.lab.entity.Event;
 import se331.lab.entity.Organizer;
 import se331.lab.entity.Participant;
+import se331.lab.repository.AuctionItemRepository;
+import se331.lab.repository.BidRepository;
 import se331.lab.repository.EventRepository;
 import se331.lab.repository.OrganizerRepository;
 import se331.lab.repository.ParticipantRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -21,6 +26,8 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
     final EventRepository eventRepostiory;
     final OrganizerRepository organizerRepository;
     final ParticipantRepository participantRepository;
+    final AuctionItemRepository auctionItemRepository;
+    final BidRepository bidRepository;
     @Override
     @Transactional
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
@@ -110,6 +117,47 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
         par3.getEventHistories().addAll(List.of(event1, event3, event4));
         par4.getEventHistories().addAll(List.of(event1, event2));
         par5.getEventHistories().addAll(List.of(event1, event2, event4));
+
+        AuctionItem auction1 = createAuctionItem("Vintage Rolex Submariner watch", "Watch",
+                45000.0, 47500.0, 52000.0);
+        AuctionItem auction2 = createAuctionItem("Signed Michael Jordan jersey", "Memorabilia",
+                18000.0, 19500.0, 23000.0);
+        AuctionItem auction3 = createAuctionItem("Antique teak dining table", "Furniture",
+                8000.0, 9200.0, 11000.0);
+        AuctionItem auction4 = createAuctionItem("First edition Harry Potter book", "Book",
+                30000.0, 34000.0, 41000.0);
+        AuctionItem auction5 = createAuctionItem("Fender Stratocaster electric guitar", "Instrument",
+                25000.0, 26500.0, 29000.0);
+
+        auction1.setSuccessfulBid(auction1.getBids().get(2));
+        auction3.setSuccessfulBid(auction3.getBids().get(1));
+        auction5.setSuccessfulBid(auction5.getBids().get(2));
+        auctionItemRepository.saveAll(List.of(auction1, auction3, auction5));
+    }
+
+    private AuctionItem createAuctionItem(String description, String type,
+                                          Double amount1, Double amount2, Double amount3) {
+        AuctionItem item = auctionItemRepository.save(AuctionItem.builder()
+                .description(description)
+                .type(type)
+                .build());
+        LocalDateTime now = LocalDateTime.now();
+        item.getBids().add(bidRepository.save(Bid.builder()
+                .amount(amount1)
+                .datetime(now.minusDays(3))
+                .item(item)
+                .build()));
+        item.getBids().add(bidRepository.save(Bid.builder()
+                .amount(amount2)
+                .datetime(now.minusDays(2))
+                .item(item)
+                .build()));
+        item.getBids().add(bidRepository.save(Bid.builder()
+                .amount(amount3)
+                .datetime(now.minusDays(1))
+                .item(item)
+                .build()));
+        return item;
     }
 
 }
