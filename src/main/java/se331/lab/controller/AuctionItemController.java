@@ -18,12 +18,15 @@ public class AuctionItemController {
 
     @GetMapping("auctionItems")
     public ResponseEntity<?> getAuctionItems(
-            @RequestParam(value = "description", required = false) String description) {
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "type", required = false) String type) {
         List<AuctionItem> output;
-        if (description == null) {
+        if (description == null && type == null) {
             output = auctionItemService.getAuctionItems();
         } else {
-            output = auctionItemService.getAuctionItems(description);
+            output = auctionItemService.getAuctionItems(
+                    description == null ? "" : description,
+                    type == null ? "" : type);
         }
         return ResponseEntity.ok(LabMapper.INSTANCE.getAuctionItemDTO(output));
     }

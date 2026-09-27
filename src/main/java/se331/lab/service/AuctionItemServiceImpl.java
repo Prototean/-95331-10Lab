@@ -23,6 +23,11 @@ public class AuctionItemServiceImpl implements AuctionItemService {
     }
 
     @Override
+    public List<AuctionItem> getAuctionItems(String description, String type) {
+        return auctionItemDao.getAuctionItems(description, type);
+    }
+
+    @Override
     public List<AuctionItem> getAuctionItemsSuccessfulBidLessThan(Double value) {
         return auctionItemDao.getAuctionItemsSuccessfulBidLessThan(value);
     }

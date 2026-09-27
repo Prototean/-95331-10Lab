@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface AuctionItemRepository extends JpaRepository<AuctionItem, Long> {
     List<AuctionItem> findByDescriptionContainingIgnoreCase(String description);
+    List<AuctionItem> findByDescriptionContainingIgnoreCaseAndTypeContainingIgnoreCase(String description, String type);
     List<AuctionItem> findBySuccessfulBidAmountLessThan(Double value);
 }
