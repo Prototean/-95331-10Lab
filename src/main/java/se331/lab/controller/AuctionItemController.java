@@ -27,4 +27,11 @@ public class AuctionItemController {
         }
         return ResponseEntity.ok(LabMapper.INSTANCE.getAuctionItemDTO(output));
     }
+
+    @GetMapping("auctionItems/successfulBidLessThan")
+    public ResponseEntity<?> getAuctionItemsSuccessfulBidLessThan(
+            @RequestParam("value") Double value) {
+        List<AuctionItem> output = auctionItemService.getAuctionItemsSuccessfulBidLessThan(value);
+        return ResponseEntity.ok(LabMapper.INSTANCE.getAuctionItemDTO(output));
+    }
 }

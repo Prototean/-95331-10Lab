@@ -7,4 +7,5 @@ import java.util.List;
 public interface AuctionItemService {
     List<AuctionItem> getAuctionItems();
     List<AuctionItem> getAuctionItems(String description);
+    List<AuctionItem> getAuctionItemsSuccessfulBidLessThan(Double value);
 }

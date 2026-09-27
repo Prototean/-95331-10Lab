@@ -21,4 +21,9 @@ public class AuctionItemDaoImpl implements AuctionItemDao {
     public List<AuctionItem> getAuctionItems(String description) {
         return auctionItemRepository.findByDescriptionContainingIgnoreCase(description);
     }
+
+    @Override
+    public List<AuctionItem> getAuctionItemsSuccessfulBidLessThan(Double value) {
+        return auctionItemRepository.findBySuccessfulBidAmountLessThan(value);
+    }
 }
