@@ -3,6 +3,8 @@ package se331.lab.util;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+import se331.lab.entity.AuctionItem;
+import se331.lab.entity.AuctionItemDTO;
 import se331.lab.entity.Event;
 import se331.lab.entity.EventDTO;
 import se331.lab.entity.Organizer;
@@ -16,6 +18,8 @@ import java.util.List;
 @Mapper
 public interface LabMapper {
     LabMapper INSTANCE = Mappers.getMapper(LabMapper.class);
+    AuctionItemDTO getAuctionItemDTO(AuctionItem auctionItem);
+    List<AuctionItemDTO> getAuctionItemDTO(List<AuctionItem> auctionItems);
     EventDTO getEventDto(Event event);
     List<EventDTO> getEventDto(List<Event> events);
     OrganizerDTO getOrganizerDTO(Organizer organizer);
